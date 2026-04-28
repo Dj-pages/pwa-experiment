@@ -6,9 +6,7 @@ const CACHED_URLS = [
   '/manifest.json'
 ];
 
-// ── INSTALL EVENT ─────────────────────────────────────────────────────────────
-// Runs once when service worker is first installed
-// Like a constructor in Java — sets everything up
+
 self.addEventListener('install', event => {
   console.log('[SW] Install event fired');
   event.waitUntil(
@@ -20,8 +18,6 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// ── ACTIVATE EVENT ────────────────────────────────────────────────────────────
-// Cleans up old caches when new SW activates
 self.addEventListener('activate', event => {
   console.log('[SW] Activate event fired');
   event.waitUntil(
@@ -39,10 +35,6 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// ── FETCH EVENT ───────────────────────────────────────────────────────────────
-// Intercepts ALL network requests — like HttpInterceptor in Java
-// If offline → serves from cache
-// If online → fetches from network and updates cache
 self.addEventListener('fetch', event => {
   console.log('[SW] Fetch intercepted for:', event.request.url);
   event.respondWith(
@@ -68,9 +60,7 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// ── SYNC EVENT ────────────────────────────────────────────────────────────────
-// Fires when device comes back online
-// Like a background thread that was waiting for network
+
 self.addEventListener('sync', event => {
   console.log('[SW] Sync event fired! Tag:', event.tag);
   if (event.tag === 'sync-messages') {
